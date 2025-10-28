@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getSupabaseClient } from "@/lib/supabase-browser";
+import type { Database } from "@/types/supabase";
 import { mergeGroup, normalizeGroups } from "@/lib/normalize";
 import { subscribeToGroups, unsubscribeFromGroups } from "@/lib/realtime";
 import type { GroupCardData, GroupStatus, GroupsBoardRow, NormalizedGroups } from "@/types/groups";
@@ -148,9 +149,11 @@ export function useGroupsBoard(options: UseGroupsBoardOptions = {}): UseGroupsBo
       });
 
       try {
+        const updatePayload: Database["public"]["Tables"]["groups"]["Update"] = { status: "green" };
+
         const { error: updateError } = await supabase
           .from("groups")
-          .update({ status: "green" })
+          .update(updatePayload)
           .eq("id", id);
 
         if (updateError) {

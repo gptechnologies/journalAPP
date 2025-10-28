@@ -10,8 +10,12 @@ export function subscribeToGroups(callback: GroupsRealtimeCallback): RealtimeCha
 
   const channel = supabase
     .channel("public:groups")
-    .on<GroupsRealtimePayload>("postgres_changes", { schema: "public", table: "groups", event: "INSERT" }, callback)
-    .on<GroupsRealtimePayload>("postgres_changes", { schema: "public", table: "groups", event: "UPDATE" }, callback)
+    .on("postgres_changes", { schema: "public", table: "groups", event: "INSERT" }, (payload) => {
+      callback(payload);
+    })
+    .on("postgres_changes", { schema: "public", table: "groups", event: "UPDATE" }, (payload) => {
+      callback(payload);
+    })
     .subscribe((status) => {
       if (status === "SUBSCRIBED") {
         console.info("Connected to groups realtime channel");

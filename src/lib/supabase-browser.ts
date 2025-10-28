@@ -1,9 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient as SupabaseClientType } from "@supabase/supabase-js";
+import type { Database } from "@/types/supabase";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-type SupabaseClient = ReturnType<typeof createClient>;
+type SupabaseClient = SupabaseClientType<Database>;
 
 let client: SupabaseClient | undefined;
 
@@ -13,7 +14,7 @@ export function getSupabaseClient(): SupabaseClient {
       throw new Error("Supabase environment variables are not configured.");
     }
 
-    client = createClient(supabaseUrl, supabaseAnonKey, {
+    client = createClient<Database, "public">(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: false
       }

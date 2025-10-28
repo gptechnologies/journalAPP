@@ -1,3 +1,8 @@
+import type {
+  RealtimePostgresInsertPayload,
+  RealtimePostgresUpdatePayload
+} from "@supabase/supabase-js";
+
 export type GroupStatus = "orange" | "green" | "grey" | "yellow" | "red";
 
 export interface GroupMember {
@@ -47,8 +52,6 @@ export interface NormalizedGroups {
   order: string[];
 }
 
-export interface GroupsRealtimePayload {
-  new: GroupsBoardRow;
-  old: GroupsBoardRow | null;
-  type: "INSERT" | "UPDATE";
-}
+export type GroupsRealtimePayload =
+  | RealtimePostgresInsertPayload<GroupsBoardRow>
+  | RealtimePostgresUpdatePayload<GroupsBoardRow>;
