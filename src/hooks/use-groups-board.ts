@@ -151,10 +151,7 @@ export function useGroupsBoard(options: UseGroupsBoardOptions = {}): UseGroupsBo
       try {
         const updatePayload: Database["public"]["Tables"]["groups"]["Update"] = { status: "green" };
 
-        const { error: updateError } = await supabase
-          .from("groups")
-          .update<Database["public"]["Tables"]["groups"]["Update"]>(updatePayload)
-          .eq("id", id);
+        const { error: updateError } = await supabase.from("groups").update(updatePayload).eq("id", id);
 
         if (updateError) {
           throw updateError;
