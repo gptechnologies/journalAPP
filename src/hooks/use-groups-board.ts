@@ -102,7 +102,7 @@ export function useGroupsBoard(options: UseGroupsBoardOptions = {}): UseGroupsBo
         throw fetchError;
       }
 
-      setState(normalizeGroups(data ?? []));
+      setState(normalizeGroups(data ?? ([] as GroupsBoardRow[])));
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Failed to load groups.");
